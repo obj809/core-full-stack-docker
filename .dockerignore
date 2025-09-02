@@ -1,4 +1,5 @@
-# Python
+# .dockerignore
+
 __pycache__/
 *.pyc
 *.pyo
@@ -8,14 +9,12 @@ __pycache__/
 venv/
 .env
 
-# Node
 node_modules/
 dist/
 build/
 .cache/
 *.log
 
-# OS / VCS
 .DS_Store
 .git
 .gitignore
