@@ -1,0 +1,26 @@
+# Dev Dockerfile for Flask API
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# System deps (optional but handy)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential default-libmysqlclient-dev curl \
+ && rm -rf /var/lib/apt/lists/*
+
+# Install Python deps
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Source code is bind-mounted in compose; copy is optional for tooling
+COPY . /app
+
+# Flask dev server will bind to 0.0.0.0 for container networking
+ENV FLASK_DEBUG=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+EXPOSE 5000
+
+# Prefer the flask runner so we can control host/port reliably
+CMD ["bash", "-lc", "flask --app app run --host=0.0.0.0 --port=5000 --debug"]
